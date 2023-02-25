@@ -1,0 +1,25 @@
+pip install pyTelegramBotAPI
+import telebot
+import requests
+bot = telebot.TeleBot('YOUR_TOKEN_HERE')
+@bot.message_handler(func=lambda message: True)
+def handle_message(message):
+    search_term = message.text
+    search_result = search(search_term)
+    bot.reply_to(message, search_result)
+def search(keyword):
+    url = f'https://en.wikipedia.org/w/api.php?action=opensearch&search={keyword}&format=json'
+    response = requests.get(url)
+    search_results = response.json()[2]
+    if search_results:
+        return search_results[0]
+    else:
+        return "No results found."
+bot.polling()
+import telebot
+import requests
+
+bot = telebot.TeleBot('YOUR_TOKEN_HERE')
+
+@bot.message_handler(func=lambda message: True)
+def handle_message(message):
